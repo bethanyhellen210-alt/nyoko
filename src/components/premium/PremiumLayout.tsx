@@ -26,8 +26,6 @@ import BulkTraderPage from './pages/BulkTraderPage';
 import CalculatorPage from './pages/CalculatorPage';
 import FreeBotsPage from './pages/FreeBotsPage';
 import {
-    AdvancedManualTradingPage,
-    AutoTraderPage,
     BotIdeasPage,
     DTraderPage,
     ProAIPage,

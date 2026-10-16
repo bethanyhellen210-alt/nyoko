@@ -1,0 +1,56 @@
+@use 'components/shared/styles/mixins' as *;
+
+.free-bots {
+    background: var(--general-main-1);
+    box-sizing: border-box;
+    container-name: free-bots;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    height: var(--tab-content-height);
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden auto;
+    padding: 2rem 2.4rem 4.8rem;
+    width: 100%;
+
+    @include tablet-screen { gap: 1.4rem; padding: 1.6rem 1.8rem 4.8rem; }
+    @include mobile-screen { gap: 1.2rem; height: var(--tab-content-height-mobile); padding: 1.2rem 1.2rem 7.2rem; }
+
+    &__header { display: flex; flex-direction: column; flex-shrink: 0; gap: 0.35rem; max-width: 56rem; }
+    &__title { color: var(--text-prominent); font-size: 2rem; font-weight: 700; line-height: 1.2; margin: 0; }
+    &__section-title { color: var(--text-prominent); font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin: 0; }
+    &__import-copy { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
+    &__import-help { color: var(--text-general); font-size: 1.2rem; line-height: 1.5; margin: 0; overflow-wrap: anywhere; }
+    &__custom-import { align-items: flex-start; background: var(--general-section-1); border: 1px solid var(--border-normal); border-radius: 1rem; display: flex; flex-direction: column; gap: 1rem; max-width: 100%; padding: 1.6rem; }
+    &__custom-section, &__published-section { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+    &__file-input { display: none; }
+
+    &__empty { align-items: center; color: var(--text-less-prominent); display: flex; font-size: 1.4rem; justify-content: center; min-height: 8rem; text-align: center; }
+    &__grid { display: grid; gap: 1.2rem; grid-template-columns: minmax(0, 1fr); list-style: none; margin: 0; min-width: 0; padding: 0 0 2.4rem; width: 100%; }
+    &__card { background: var(--general-section-1); border: 1px solid var(--border-normal); border-radius: 1rem; box-sizing: border-box; display: flex; flex-direction: column; gap: 1rem; min-height: 100%; min-width: 0; padding: 1.6rem; }
+    &__card-top { align-items: flex-start; display: flex; gap: 0.8rem; min-width: 0; }
+    &__badge { align-items: center; background: var(--brand-primary, var(--button-primary-default)); border-radius: 999px; color: var(--text-colored-background, #fff); display: inline-flex; flex-shrink: 0; font-size: 1.15rem; font-weight: 700; height: 2.4rem; justify-content: center; line-height: 1; min-width: 2.4rem; padding: 0 0.55rem; }
+    &__card-title { color: var(--text-prominent); flex: 1; font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin: 0; min-width: 0; overflow-wrap: anywhere; padding-top: 0.15rem; }
+    &__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+    &__tag { background: var(--general-main-1); border: 1px solid var(--border-normal); border-radius: 999px; color: var(--text-less-prominent); font-size: 1.05rem; font-weight: 600; letter-spacing: 0.01em; line-height: 1.2; max-width: 100%; overflow-wrap: anywhere; padding: 0.45rem 0.75rem; text-transform: uppercase; }
+    &__card-footer { display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; padding-top: 0.4rem; }
+    &__status { color: var(--text-general); font-size: 1.15rem; line-height: 1.4; margin: 0; overflow-wrap: anywhere; }
+    &__button.dc-btn { height: auto; max-width: 100%; min-height: 3.2rem; padding-bottom: 0.6rem; padding-top: 0.6rem; white-space: normal; width: 100%; .dc-btn__text { white-space: normal; } }
+
+    @include mobile-screen {
+        &__custom-import { border-radius: 0.8rem; padding: 1.2rem; }
+        &__title { font-size: 1.6rem; }
+        &__section-title { font-size: 1.35rem; }
+        &__card { border-radius: 0.8rem; gap: 0.8rem; padding: 1.2rem; }
+        &__card-title { font-size: 1.35rem; }
+    }
+}
+
+@container free-bots (min-width: 64rem) {
+    .free-bots__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container free-bots (min-width: 112rem) {
+    .free-bots__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

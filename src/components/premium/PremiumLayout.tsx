@@ -189,10 +189,6 @@ const PremiumLayout = observer(() => {
         }
     }, [changeSection, customization.loaded, customization.navigation, section]);
 
-    if (!runtimeAuthenticated && (isOAuthCallback || isAuthorizing || hasStoredAuth)) return <PremiumLoader />;
-    if (!isAuthenticated) return <LandingPage onLogin={() => startOAuth()} onSignup={() => startOAuth('registration')} busy={isAuthorizing} />;
-
-    const openBotBuilder = () => changeSection('bot_builder');
     const handleNativeTabChange = useCallback((activeNumber: number) => {
         if (activeNumber === DBOT_TABS.BOT_BUILDER) {
             changeSection('bot_builder');
@@ -205,6 +201,10 @@ const PremiumLayout = observer(() => {
         dashboard?.setActiveTab(activeNumber);
     }, [changeSection, dashboard]);
 
+    if (!runtimeAuthenticated && (isOAuthCallback || isAuthorizing || hasStoredAuth)) return <PremiumLoader />;
+    if (!isAuthenticated) return <LandingPage onLogin={() => startOAuth()} onSignup={() => startOAuth('registration')} busy={isAuthorizing} />;
+
+    const openBotBuilder = () => changeSection('bot_builder');
     const renderSection = () => {
         switch (section) {
             case 'dashboard': return <Dashboard handleTabChange={handleNativeTabChange} />;

@@ -448,32 +448,45 @@
 }
 
 
-/* Bot Builder shortcut and mobile layout corrections. */
+/* Keep Pro Analysis attached to the Save control, never floating over Blockly. */
+.toolbar__save-analysis-stack {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+
 .prodb-builder-analysis-shortcut {
-    position: fixed;
-    z-index: 175;
-    right: 18px;
-    bottom: 82px;
-    min-height: 42px;
-    padding: 0 16px;
+    position: static;
+    z-index: auto;
+    display: block;
+    min-height: 28px;
+    padding: 0 7px;
     border: 1px solid #087f66;
-    border-radius: 7px;
+    border-radius: 5px;
     background: #087f66;
     color: #fff;
-    font-size: 12px;
-    font-weight: 900;
-    box-shadow: 0 5px 16px rgba(0, 80, 63, .2);
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 800;
+    white-space: nowrap;
+    box-shadow: none;
     cursor: pointer;
     touch-action: manipulation;
 }
 
 @media (max-width: 768px) {
+    .toolbar__save-analysis-stack {
+        gap: 5px;
+    }
+
     .prodb-builder-analysis-shortcut {
-        right: 10px;
-        bottom: calc(var(--prodb-mobile-trade-dock) + 10px);
-        min-height: 44px;
-        padding-inline: 14px;
-        font-size: 12px;
+        min-height: 30px;
+        padding-inline: 6px;
+        font-size: 10px;
     }
 
     /* Keep every Bulk Trades setting reachable without horizontal clipping. */

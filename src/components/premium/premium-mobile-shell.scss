@@ -446,3 +446,198 @@
         padding-inline: 10px;
     }
 }
+
+
+/* Bot Builder shortcut and mobile layout corrections. */
+.prodb-builder-analysis-shortcut {
+    position: fixed;
+    z-index: 175;
+    right: 18px;
+    bottom: 82px;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid #087f66;
+    border-radius: 7px;
+    background: #087f66;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: 0 5px 16px rgba(0, 80, 63, .2);
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+@media (max-width: 768px) {
+    .prodb-builder-analysis-shortcut {
+        right: 10px;
+        bottom: calc(var(--prodb-mobile-trade-dock) + 10px);
+        min-height: 44px;
+        padding-inline: 14px;
+        font-size: 12px;
+    }
+
+    /* Keep every Bulk Trades setting reachable without horizontal clipping. */
+    .prodb-bulk-page {
+        padding: 12px 10px calc(var(--prodb-mobile-trade-dock) + 28px) !important;
+        overflow: visible;
+    }
+
+    .prodb-bulk-page .prodb-form-row {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px;
+    }
+
+    .prodb-bulk-page .prodb-form-row--three {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px;
+        margin-top: 14px;
+    }
+
+    .prodb-bulk-page .prodb-form-row label,
+    .prodb-bulk-page .prodb-full-input {
+        min-width: 0;
+        font-size: 9px;
+        letter-spacing: .45px;
+    }
+
+    .prodb-bulk-page .prodb-form-row select,
+    .prodb-bulk-page .prodb-form-row input,
+    .prodb-bulk-page .prodb-full-input input {
+        min-width: 0;
+        height: 46px;
+        padding-inline: 10px;
+    }
+
+    .prodb-bulk-stats {
+        min-height: 0;
+        padding-top: 75px;
+    }
+
+    .prodb-current-tick {
+        top: 14px;
+        left: 0;
+        max-width: 58%;
+    }
+
+    .prodb-current-tick strong {
+        font-size: clamp(24px, 7vw, 36px);
+        overflow-wrap: anywhere;
+    }
+
+    .prodb-ai-scanner {
+        top: 22px;
+        right: 0;
+        padding-inline: 9px;
+    }
+
+    .prodb-digit-row {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px 4px;
+        padding-top: 10px;
+    }
+
+    .prodb-digit-row span {
+        width: clamp(34px, 10vw, 44px);
+        height: clamp(34px, 10vw, 44px);
+        font-size: 15px;
+    }
+
+    .prodb-digit-row small {
+        font-size: 9px;
+    }
+
+    .prodb-sequence {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 5px;
+    }
+
+    .prodb-sequence span {
+        flex: 0 0 25px;
+    }
+
+    .prodb-trade-pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .prodb-trade-pair > div {
+        min-width: 0;
+        padding: 12px 8px;
+        overflow-wrap: anywhere;
+    }
+
+    .prodb-trade-pair > div > span {
+        font-size: 10px;
+        overflow-wrap: anywhere;
+    }
+
+    .prodb-trade-pair strong {
+        font-size: clamp(17px, 5vw, 24px);
+    }
+
+    .prodb-bulk-execute {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 16px;
+    }
+
+    .prodb-bulk-results {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 6px;
+        overflow-wrap: anywhere;
+    }
+
+    /* Expanded Run Panel fills the mobile baseline; Summary and Transactions
+       remain horizontally scrollable and their content vertically reachable. */
+    .prodb-premium-shell .prodb-bot-builder-host .dc-drawer.run-panel.dc-drawer--open {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: calc(var(--prodb-mobile-run-controls) + var(--prodb-mobile-safe-bottom)) !important;
+    }
+
+    .prodb-premium-shell .prodb-bot-builder-host .dc-drawer.run-panel.dc-drawer--open .run-panel__content {
+        display: flex !important;
+        flex-direction: column;
+        min-height: 0 !important;
+    }
+
+    .prodb-premium-shell .prodb-bot-builder-host .dc-drawer.run-panel .dc-tabs__list {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        width: 100%;
+        min-width: 0;
+        overflow-x: auto !important;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .prodb-premium-shell .prodb-bot-builder-host .dc-drawer.run-panel .dc-tabs__list > * {
+        flex: 1 0 auto;
+        min-width: 86px;
+        white-space: nowrap;
+    }
+
+    .prodb-premium-shell .prodb-bot-builder-host .dc-drawer.run-panel .run-panel-tab__content--mobile,
+    .prodb-premium-shell .prodb-bot-builder-host .dc-drawer.run-panel .run-panel__stat--mobile {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 420px) {
+    .prodb-bulk-page .prodb-form-row--three {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .prodb-trade-pair {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

@@ -21,6 +21,7 @@ const NAV_ICONS: Partial<Record<PremiumSection, typeof HomeIcon>> = {
     speedbot: GridIcon,
     copy_trading: CopyIcon,
     analysis_tools: SearchIcon,
+    pro_analysis: SearchIcon,
     calculator: CalculatorIcon,
 };
 

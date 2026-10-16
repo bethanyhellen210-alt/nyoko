@@ -61,19 +61,30 @@ const WorkspaceGroup = observer(() => {
                         </span>
                     }
                 />
-                <ToolbarIcon
-                    popover_message={localize('Save')}
-                    icon={
-                        <span
-                            className='toolbar__icon'
-                            id='db-toolbar__save-button'
-                            data-testid='dt_toolbar_save_button'
-                            onClick={toggleSaveModal}
-                        >
-                            <LabelPairedFloppyDiskMdRegularIcon />
-                        </span>
-                    }
-                />
+                <div className='toolbar__save-analysis-stack'>
+                    <ToolbarIcon
+                        popover_message={localize('Save')}
+                        icon={
+                            <span
+                                className='toolbar__icon'
+                                id='db-toolbar__save-button'
+                                data-testid='dt_toolbar_save_button'
+                                onClick={toggleSaveModal}
+                            >
+                                <LabelPairedFloppyDiskMdRegularIcon />
+                            </span>
+                        }
+                    />
+                    <button
+                        type='button'
+                        className='prodb-builder-analysis-shortcut'
+                        onClick={() => {
+                            window.location.hash = '#pro_analysis';
+                        }}
+                    >
+                        Pro Analysis
+                    </button>
+                </div>
                 <ToolbarIcon
                     popover_message={localize('Sort blocks')}
                     icon={

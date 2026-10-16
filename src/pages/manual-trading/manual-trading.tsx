@@ -3,7 +3,6 @@ import type { CSSProperties } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import Dialog from '@/components/shared_ui/dialog';
-import { DBOT_TABS } from '@/constants/bot-contents';
 import { api_base } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import {
@@ -297,8 +296,7 @@ const getProposalPreview = (proposal: any, requestedStake: number, currency: str
 };
 
 const ManualTrading = observer(() => {
-    const { client, dashboard, run_panel, summary_card, transactions, ui } = useStore();
-    const { active_tab } = dashboard;
+    const { client, run_panel, summary_card, transactions, ui } = useStore();
     const [selectedSymbol, setSelectedSymbol] = useState(MANUAL_MARKETS[0].symbol);
     const [tickCountInput, setTickCountInput] = useState(String(DEFAULT_TICK_COUNT));
     const [activeTickCount, setActiveTickCount] = useState(DEFAULT_TICK_COUNT);
@@ -344,9 +342,7 @@ const ManualTrading = observer(() => {
     const loadedSignalRef = useRef<TLoadedSignal | null>(null);
     const signalTradingActiveRef = useRef(false);
     const lastTriggeredEntryKeyRef = useRef('');
-    const previousQualifiedSignalKeyRef = useRef<string | null>(null);
 
-    const showManualTrading = active_tab === DBOT_TABS.MANUAL_TRADING;
     const selectedMarket = MANUAL_MARKETS.find(market => market.symbol === selectedSymbol) ?? MANUAL_MARKETS[0];
     const latestTick = ticks[ticks.length - 1] ?? null;
     const latestDigit = latestTick ? getLastDigitFromQuote(latestTick.quote, selectedSymbol) : null;
@@ -465,7 +461,6 @@ const ManualTrading = observer(() => {
                         playStrategyMonitorSound();
                         setIsSignalLauncherVisible(true);
                         setFocusedSignalKey(key);
-                        previousQualifiedSignalKeyRef.current = key;
                         setMonitorStatusMessage(
                             `${market.label} matched ${snapshot.alertLabel}. Load market to prepare entry.`
                         );
@@ -510,7 +505,6 @@ const ManualTrading = observer(() => {
         clearRetryTimer();
         unsubscribe();
 
-        if (!showManualTrading) return;
 
         const requestVersion = requestVersionRef.current + 1;
         requestVersionRef.current = requestVersion;
@@ -528,7 +522,7 @@ const ManualTrading = observer(() => {
         const scheduleStreamWatchdog = () => {
             clearStreamWatchdogTimer();
             streamWatchdogTimerRef.current = setTimeout(() => {
-                if (requestVersionRef.current !== requestVersion || !showManualTrading) return;
+                if (requestVersionRef.current !== requestVersion) return;
                 const elapsed = Date.now() - lastLiveTickAtRef.current;
                 if (elapsed >= LIVE_TICK_STALE_MS) {
                     setError(null);
@@ -624,18 +618,10 @@ const ManualTrading = observer(() => {
         clearRetryTimer,
         clearStreamWatchdogTimer,
         selectedSymbol,
-        showManualTrading,
         unsubscribe,
     ]);
 
     useEffect(() => {
-        if (!showManualTrading) {
-            clearRetryTimer();
-            clearStreamWatchdogTimer();
-            unsubscribe();
-            return undefined;
-        }
-
         void loadMarketData();
 
         return () => {
@@ -643,7 +629,7 @@ const ManualTrading = observer(() => {
             clearStreamWatchdogTimer();
             unsubscribe();
         };
-    }, [clearRetryTimer, clearStreamWatchdogTimer, loadMarketData, showManualTrading, unsubscribe]);
+    }, [clearRetryTimer, clearStreamWatchdogTimer, loadMarketData, unsubscribe]);
 
     const stopSignalTrading = useCallback((message?: string) => {
         signalTradingActiveRef.current = false;
@@ -668,11 +654,6 @@ const ManualTrading = observer(() => {
     }, []);
 
     useEffect(() => {
-        if (!showManualTrading) {
-            clearStrategyMonitorSubscriptions();
-            return undefined;
-        }
-
         const monitorVersion = monitorVersionRef.current + 1;
         monitorVersionRef.current = monitorVersion;
         clearStrategyMonitorSubscriptions();
@@ -680,7 +661,6 @@ const ManualTrading = observer(() => {
         setFocusedSignalKey(null);
         setIsSignalLauncherVisible(false);
         setMonitorStatusMessage('Watching all volatility and 1s markets for Over 2 and Under 7 signals.');
-        previousQualifiedSignalKeyRef.current = null;
         let retryTimer: ReturnType<typeof setTimeout> | null = null;
 
         const startMonitoringStreams = () => {
@@ -760,7 +740,7 @@ const ManualTrading = observer(() => {
             if (retryTimer) clearTimeout(retryTimer);
             clearStrategyMonitorSubscriptions();
         };
-    }, [activeTickCount, clearStrategyMonitorSubscriptions, showManualTrading]);
+    }, [activeTickCount, clearStrategyMonitorSubscriptions]);
 
     const buildTradeParameters = useCallback(
         (contractType: TManualTradeAction['contractType'], stakeOverride?: number) => {
@@ -809,7 +789,7 @@ const ManualTrading = observer(() => {
         setIsProposalLoading(false);
 
         const stake = Number(stakeInput);
-        if (!showManualTrading || !Number.isFinite(stake) || stake <= 0) return undefined;
+        if (!Number.isFinite(stake) || stake <= 0) return undefined;
 
         const queueProposalRetry = (delay = 1500) => {
             clearProposalRetryTimer();
@@ -863,7 +843,6 @@ const ManualTrading = observer(() => {
         currency,
         localProposalPreviews,
         proposalRefreshKey,
-        showManualTrading,
         stakeInput,
     ]);
 
@@ -1139,8 +1118,6 @@ const ManualTrading = observer(() => {
         );
         void handleManualPurchase(signalTradeAction);
     }, [handleManualPurchase, isPurchasing, isSignalTradingActive, loadedSignalState, signalTradeAction]);
-
-    if (!showManualTrading) return null;
 
     return (
         <div

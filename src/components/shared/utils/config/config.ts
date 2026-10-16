@@ -231,6 +231,13 @@ export const clearCSRFToken = (): void => {
 export const generateOAuthURL = async (prompt?: string) => {
     try {
         const site = requireCurrentSiteConfig();
+        if (!site.client_id || !site.client_id.trim()) {
+            throw new Error('Deriv login is not configured: set CLIENT_ID in Vercel and redeploy.');
+        }
+        if (!site.redirect_uri || !site.redirect_uri.startsWith('https://')) {
+            throw new Error('Deriv login requires a valid HTTPS callback URL.');
+        }
+
         const authBase = brandConfig.platform.auth2_url[site.environment];
         if (!authBase) throw new Error(`No Deriv OAuth base URL for ${site.environment}`);
 

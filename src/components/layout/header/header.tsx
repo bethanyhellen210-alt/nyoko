@@ -88,9 +88,10 @@ const AppHeader = observer(() => {
             setIsAuthorizing(true);
             const oauthUrl = await generateOAuthURL('registration');
             if (oauthUrl) {
-                window.location.replace(oauthUrl);
+                window.location.assign(oauthUrl);
             } else {
-                console.error('Failed to generate OAuth URL for signup');
+                console.error('Failed to generate OAuth URL for signup. Check CLIENT_ID and DERIV_REDIRECT_URI in Vercel.');
+                window.alert('Deriv sign-up could not open. Check that CLIENT_ID is set in Vercel and DERIV_REDIRECT_URI is https://nyoko-beryl.vercel.app/callback, then redeploy.');
                 setIsAuthorizing(false);
             }
         } catch (error) {
@@ -108,10 +109,11 @@ const AppHeader = observer(() => {
             const oauthUrl = await generateOAuthURL();
 
             if (oauthUrl) {
-                // Redirect to OAuth URL
-                window.location.replace(oauthUrl);
+                // Navigate in the current tab; this also works in mobile browsers that block pop-up windows.
+                window.location.assign(oauthUrl);
             } else {
-                console.error('Failed to generate OAuth URL');
+                console.error('Failed to generate OAuth URL. Check CLIENT_ID and DERIV_REDIRECT_URI in Vercel.');
+                window.alert('Deriv login could not open. Check that CLIENT_ID is set in Vercel and DERIV_REDIRECT_URI is https://nyoko-beryl.vercel.app/callback, then redeploy.');
                 setIsAuthorizing(false);
             }
         } catch (error) {

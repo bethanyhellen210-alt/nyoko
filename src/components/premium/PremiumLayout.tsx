@@ -143,9 +143,12 @@ const PremiumLayout = observer(() => {
     }, [activateNativeBotBuilder, isAuthenticated, section]);
 
     useEffect(() => {
+        // Only synchronize sections that have a real native DBot tab index.
+        // Manual Trading is a standalone premium page, not a DBOT_TABS entry.
+        // Passing DBOT_TABS.MANUAL_TRADING (undefined) into setActiveTab crashes
+        // when the dashboard store calls undefined.toString().
         if (!isAuthenticated) return;
         if (section === 'auto_trader') dashboard?.setActiveTab(DBOT_TABS.AUTO_TRADES);
-        if (section === 'manual_trading') dashboard?.setActiveTab(DBOT_TABS.MANUAL_TRADING);
     }, [dashboard, isAuthenticated, section]);
 
     const startOAuth = useCallback(async (prompt?: string) => {

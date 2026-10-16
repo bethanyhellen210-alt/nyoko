@@ -14,6 +14,7 @@ export type PremiumSection =
     | 'calculator'
     | 'pro_ai'
     | 'analysis_tools'
+    | 'pro_analysis'
     | 'analysis_hub'
     | 'charts'
     | 'tradingview'

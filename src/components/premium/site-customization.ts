@@ -28,6 +28,7 @@ export const NAVIGATION_CATALOG: Array<{ id: PremiumSection; label: string; requ
     { id: 'speedbot', label: 'Speed Bot' },
     { id: 'copy_trading', label: 'Copy Trading' },
     { id: 'analysis_tools', label: 'Analysis Tool' },
+    { id: 'pro_analysis', label: 'Pro Analysis' },
     { id: 'calculator', label: 'Calculator' },
 ];
 

@@ -308,12 +308,9 @@ const RunPanel = observer(() => {
         />
     );
 
-    // PROD B uses the native Deriv Run Panel as a global execution surface.
-    // Keep it mounted on every authenticated premium section so the same
-    // drawer state, summary, transactions, journal, and run controls persist
-    // while the user moves between tools.
-    if (active_tour === 'bot_builder') return null;
-
+    // Keep the native Run Panel mounted in Bot Builder as well as the other
+    // premium sections so Summary, Transactions, Journal, and run controls
+    // remain available while building a strategy.
     return (
         <>
             <div className={!isDesktop && is_drawer_open ? 'run-panel__container--mobile' : 'run-panel'}>

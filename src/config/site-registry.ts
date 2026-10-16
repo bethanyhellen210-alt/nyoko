@@ -30,10 +30,26 @@ const multiSite = brandConfig.sites as MultiSiteConfig;
 
 const normalizeHost = (host: string) => host.trim().toLowerCase().replace(/^www\./, '');
 
-export const getAllSiteConfigs = (): SiteOAuthConfig[] => multiSite.entries;
+const NYOKO_VERCEL_HOST = 'nyoko-beryl.vercel.app';
+const NYOKO_VERCEL_SITE_ID = 'nyoko-vercel';
+const NYOKO_VERCEL_CONFIG: SiteOAuthConfig = {
+    id: NYOKO_VERCEL_SITE_ID,
+    hosts: [NYOKO_VERCEL_HOST],
+    display_domain: NYOKO_VERCEL_HOST,
+    website_url: 'https://nyoko-beryl.vercel.app',
+    redirect_uri: 'https://nyoko-beryl.vercel.app/callback',
+    // CLIENT_ID must be the OAuth 2.0 client ID registered for this exact callback URL.
+    client_id: process.env.CLIENT_ID || '',
+    scopes: ['trade', 'application_read'],
+    environment: 'production',
+    legacy_app_id: process.env.APP_ID || undefined,
+};
+
+export const getAllSiteConfigs = (): SiteOAuthConfig[] => [...multiSite.entries, NYOKO_VERCEL_CONFIG];
 
 export const getSiteConfigById = (siteId: string | null | undefined): SiteOAuthConfig | undefined => {
     if (!siteId) return undefined;
+    if (siteId === NYOKO_VERCEL_SITE_ID) return NYOKO_VERCEL_CONFIG;
     return multiSite.entries.find(site => site.id === siteId);
 };
 
@@ -52,6 +68,8 @@ export const resolveSiteConfig = (hostname?: string): SiteOAuthConfig | undefine
     );
 
     if (!currentHost) return undefined;
+
+    if (currentHost === NYOKO_VERCEL_HOST) return NYOKO_VERCEL_CONFIG;
 
     return multiSite.entries.find(site => site.hosts.some(host => normalizeHost(host) === currentHost));
 };

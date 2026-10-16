@@ -28,6 +28,7 @@ export default defineConfig({
             'process.env': {
                 APP_ENV: JSON.stringify(process.env.APP_ENV),
                 CLIENT_ID: JSON.stringify(process.env.CLIENT_ID),
+                DERIV_REDIRECT_URI: JSON.stringify(process.env.DERIV_REDIRECT_URI),
                 APP_ID: JSON.stringify(process.env.APP_ID),
                 GD_CLIENT_ID: JSON.stringify(process.env.GD_CLIENT_ID),
                 GD_APP_ID: JSON.stringify(process.env.GD_APP_ID),

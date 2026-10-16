@@ -37,7 +37,7 @@ const NYOKO_VERCEL_CONFIG: SiteOAuthConfig = {
     hosts: [NYOKO_VERCEL_HOST],
     display_domain: NYOKO_VERCEL_HOST,
     website_url: 'https://nyoko-beryl.vercel.app',
-    redirect_uri: 'https://nyoko-beryl.vercel.app/callback',
+    redirect_uri: process.env.DERIV_REDIRECT_URI || 'https://nyoko-beryl.vercel.app/callback',
     // CLIENT_ID must be the OAuth 2.0 client ID registered for this exact callback URL.
     client_id: process.env.CLIENT_ID || '',
     scopes: ['trade', 'application_read'],

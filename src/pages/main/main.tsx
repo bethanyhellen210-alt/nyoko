@@ -1,8 +1,10 @@
+// @ts-nocheck — vendored bot code with known upstream type gaps; see AGENTS.md
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
+import FeatureErrorBoundary from '@/components/feature-error-boundary';
 import { generateOAuthURL } from '@/components/shared';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
@@ -30,7 +32,9 @@ import {
     setModalStateChangeCallback,
 } from '@/utils/trade-type-modal-handler';
 import {
+    LabelPairedChartCandlestickCaptionRegularIcon,
     LabelPairedChartLineCaptionRegularIcon,
+    LabelPairedClapperboardPlayCaptionRegularIcon,
     LabelPairedObjectsColumnCaptionRegularIcon,
     LabelPairedPuzzlePieceTwoCaptionBoldIcon,
 } from '@deriv/quill-icons/LabelPaired';
@@ -45,6 +49,10 @@ import './main.scss';
 
 const ChartWrapper = lazy(() => import('../chart/chart-wrapper'));
 const Tutorial = lazy(() => import('../tutorials'));
+const Analysis = lazy(() => import('../analysis'));
+const FreeBots = lazy(() => import('../free-bots'));
+const AutoTrades = lazy(() => import('../auto-trades'));
+const TradingViewPage = lazy(() => import('../tradingview'));
 
 const AppWrapper = observer(() => {
     const { connectionStatus } = useApiBase();
@@ -77,7 +85,7 @@ const AppWrapper = observer(() => {
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
-    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
+    const hash = ['dashboard', 'bot_builder', 'chart', 'analysis', 'tutorial', 'free_bots', 'auto_trades', 'tradingview'];
     const { isDesktop } = useDevice();
     const location = useLocation();
     const navigate = useNavigate();
@@ -118,11 +126,15 @@ const AppWrapper = observer(() => {
         };
     };
 
+    // App Builder embeds the bot at /bot/preview — open the bot builder there by
+    // default (instead of the dashboard) when no explicit #tab hash is present.
+    const is_preview_mode = window.location.pathname.includes('/preview');
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
         tab_value = location.hash?.split('#')[1];
-        if (!tab_value) return tab;
-        return Number(hash.indexOf(String(tab_value)));
+        if (!tab_value) return is_preview_mode ? BOT_BUILDER : tab;
+        const hashed_index = hash.indexOf(String(tab_value));
+        return hashed_index >= 0 ? hashed_index : DBOT_TABS.ANALYSIS;
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
@@ -427,6 +439,25 @@ const AppWrapper = observer(() => {
                             <div
                                 label={
                                     <>
+                                        <LabelPairedChartCandlestickCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Analysis' />
+                                    </>
+                                }
+                                id='id-analysis'
+                            >
+                                <Suspense
+                                    fallback={<ChunkLoader message={localize('Please wait, loading analysis...')} />}
+                                >
+                                    <Analysis />
+                                </Suspense>
+                            </div>
+                            <div
+                                label={
+                                    <>
                                         <LegacyGuide1pxIcon
                                             height='16px'
                                             width='16px'
@@ -447,6 +478,37 @@ const AppWrapper = observer(() => {
                                         <Tutorial handleTabChange={handleTabChange} />
                                     </Suspense>
                                 </div>
+                            </div>
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedClapperboardPlayCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Free Bots' />
+                                    </>
+                                }
+                                id='id-free-bots'
+                            >
+                                <Suspense
+                                    fallback={<ChunkLoader message={localize('Please wait, loading free bots...')} />}
+                                >
+                                    <FreeBots />
+                                </Suspense>
+                            </div>
+                            <div label={<Localize i18n_default_text='Auto Trades' />} id='id-auto-trades'>
+                                <FeatureErrorBoundary featureName='Auto Trades'>
+                                    <Suspense fallback={<ChunkLoader message={localize('Loading Auto Trades...')} />}>
+                                        <AutoTrades />
+                                    </Suspense>
+                                </FeatureErrorBoundary>
+                            </div>
+                            <div label={<Localize i18n_default_text='Trading View' />} id='id-trading-view-page'>
+                                <Suspense fallback={<ChunkLoader message={localize('Loading Trading View...')} />}>
+                                    <TradingViewPage />
+                                </Suspense>
                             </div>
                         </Tabs>
                         {!isDesktop && right_tab_shadow && <span className='tabs-shadow tabs-shadow--right' />}{' '}

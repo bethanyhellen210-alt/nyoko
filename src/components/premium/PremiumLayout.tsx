@@ -6,6 +6,8 @@ import { generateOAuthURL } from '@/components/shared';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
+import Dashboard from '@/pages/dashboard';
+import ProAnalysis from '@/pages/analysis';
 import AutoTradesPage from '@/pages/auto-trades/auto-trades';
 import ManualTradingPage from '@/pages/manual-trading';
 import TradingViewPage from '@/pages/tradingview';
@@ -22,7 +24,6 @@ import AnalysisToolsPage from './pages/AnalysisToolsPage';
 import BatchTraderPage from './pages/BatchTraderPage';
 import BulkTraderPage from './pages/BulkTraderPage';
 import CalculatorPage from './pages/CalculatorPage';
-import DashboardHome from './pages/DashboardHome';
 import FreeBotsPage from './pages/FreeBotsPage';
 import {
     AdvancedManualTradingPage,
@@ -63,7 +64,7 @@ import './premium-site-theme.scss';
 
 const validSections: PremiumSection[] = [
     'dashboard', 'bot_ideas', 'quick_bot', 'bot_builder', 'free_bots', 'signal_ai', 'auto_trader',
-    'manual_trading', 'bulk_trader', 'batch_trader', 'copy_trading', 'speedbot', 'calculator', 'pro_ai', 'analysis_tools',
+    'manual_trading', 'bulk_trader', 'batch_trader', 'copy_trading', 'speedbot', 'calculator', 'pro_ai', 'analysis_tools', 'pro_analysis',
     'analysis_hub', 'charts', 'tradingview', 'dtrader',
 ];
 
@@ -192,9 +193,21 @@ const PremiumLayout = observer(() => {
     if (!isAuthenticated) return <LandingPage onLogin={() => startOAuth()} onSignup={() => startOAuth('registration')} busy={isAuthorizing} />;
 
     const openBotBuilder = () => changeSection('bot_builder');
+    const handleNativeTabChange = useCallback((activeNumber: number) => {
+        if (activeNumber === DBOT_TABS.BOT_BUILDER) {
+            changeSection('bot_builder');
+            return;
+        }
+        if (activeNumber === DBOT_TABS.ANALYSIS) {
+            changeSection('pro_analysis');
+            return;
+        }
+        dashboard?.setActiveTab(activeNumber);
+    }, [changeSection, dashboard]);
+
     const renderSection = () => {
         switch (section) {
-            case 'dashboard': return <DashboardHome openBotBuilder={openBotBuilder} openSection={changeSection} />;
+            case 'dashboard': return <Dashboard handleTabChange={handleNativeTabChange} />;
             case 'bot_ideas': return <BotIdeasPage openBotBuilder={openBotBuilder} />;
             case 'quick_bot': return <QuickBotPage openBotBuilder={openBotBuilder} openSection={changeSection} />;
             case 'bot_builder': return null;
@@ -209,6 +222,7 @@ const PremiumLayout = observer(() => {
             case 'calculator': return <CalculatorPage />;
             case 'pro_ai': return <ProAIPage />;
             case 'analysis_tools': return <AnalysisToolsPage />;
+            case 'pro_analysis': return <ProAnalysis />;
             case 'analysis_hub': return <SourceAnalysisToolsPage />;
             case 'charts': return <ChartsPage />;
             case 'tradingview': return <TradingViewPage />;

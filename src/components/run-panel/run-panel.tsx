@@ -11,6 +11,7 @@ import Text from '@/components/shared_ui/text';
 import Summary from '@/components/summary';
 import TradeAnimation from '@/components/trade-animation';
 import Transactions from '@/components/transactions';
+import { DBOT_TABS } from '@/constants/bot-contents';
 import { popover_zindex } from '@/constants/z-indexes';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
@@ -264,8 +265,9 @@ const RunPanel = observer(() => {
         toggleStatisticsInfoModal,
     } = run_panel;
     const { statistics } = transactions;
-    const { active_tour } = dashboard;
+    const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
+    const { ANALYSIS, BOT_BUILDER, CHART, DASHBOARD, FREE_BOTS, TUTORIAL } = DBOT_TABS;
 
     React.useEffect(() => {
         onMount();
@@ -308,9 +310,11 @@ const RunPanel = observer(() => {
         />
     );
 
-    // Keep the native Run Panel mounted in Bot Builder as well as the other
-    // premium sections so Summary, Transactions, Journal, and run controls
-    // remain available while building a strategy.
+    const show_run_panel =
+        [DASHBOARD, BOT_BUILDER, CHART, ANALYSIS, TUTORIAL, FREE_BOTS].includes(active_tab) ||
+        active_tour;
+    if (!show_run_panel && isDesktop) return null;
+
     return (
         <>
             <div className={!isDesktop && is_drawer_open ? 'run-panel__container--mobile' : 'run-panel'}>

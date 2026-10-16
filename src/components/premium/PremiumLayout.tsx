@@ -48,7 +48,6 @@ import './premium-native-bot-builder.scss';
 import './premium-account.scss';
 import './premium-global-trading.scss';
 import './premium-mobile-shell.scss';
-import './premium-run-panel-right.scss';
 import './premium-run-panel-mobile-history.scss';
 import './premium-ai-scanner.scss';
 import './premium-ai-scanner-override.scss';
@@ -76,7 +75,7 @@ const isLocalDevelopmentHost = () => ['localhost', '127.0.0.1'].includes(window.
 const PremiumLayout = observer(() => {
     const { activeLoginid, isAuthorizing, setIsAuthorizing } = useApiBase();
     const store = useStore();
-    const { client, dashboard, run_panel } = store ?? {};
+    const { client, dashboard } = store ?? {};
     const location = useLocation();
     const navigate = useNavigate();
     const customization = useSiteCustomization();
@@ -230,7 +229,6 @@ const PremiumLayout = observer(() => {
     };
 
     const isBotBuilder = section === 'bot_builder';
-    const isRunPanelOpen = Boolean(run_panel?.is_drawer_open);
     const themeStyle = {
         '--site-primary': customization.colors.primary,
         '--site-secondary': customization.colors.secondary,
@@ -240,7 +238,7 @@ const PremiumLayout = observer(() => {
     } as CSSProperties;
 
     return <div
-        className={`prodb-premium-shell ${isBotBuilder ? 'prodb-premium-shell--builder' : ''} ${isRunPanelOpen ? 'prodb-premium-shell--run-open' : ''}`}
+        className={`prodb-premium-shell ${isBotBuilder ? 'prodb-premium-shell--builder' : ''}`}
         style={themeStyle}
     >
         <GlobalContractBridge />

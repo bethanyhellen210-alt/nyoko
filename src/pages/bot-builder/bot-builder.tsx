@@ -122,6 +122,15 @@ const BotBuilder = observer(() => {
                 <div id='scratch_div' ref={el_ref}>
                     <WorkspaceWrapper />
                 </div>
+                <button
+                    type='button'
+                    className='prodb-builder-analysis-shortcut'
+                    onClick={() => {
+                        window.location.hash = '#pro_analysis';
+                    }}
+                >
+                    Pro Analysis
+                </button>
             </div>
             {active_tab === 1 && <BotBuilderTourHandler is_mobile={!isDesktop} />}
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}

@@ -188,7 +188,7 @@
         .animation {
             &__button#db-animation {
                 &__run-button {
-                    background-color: var(--purchase-main-1);
+                    background-color: var(--button-primary-default);
                 }
 
                 &__stop-button {
@@ -218,7 +218,7 @@
     .animation {
         &__button#db-animation {
             &__run-button {
-                background-color: var(--purchase-main-1);
+                background-color: var(--button-primary-default);
             }
 
             &__stop-button {
@@ -366,7 +366,7 @@
 
         .animation {
             &__button {
-                background-color: var(--purchase-main-1);
+                background-color: var(--button-primary-default);
             }
 
             &__container {

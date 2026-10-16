@@ -51,8 +51,22 @@ const fetchTextWithFallback = async (urls: string[], label: string): Promise<str
     for (const url of Array.from(new Set(urls.filter(Boolean)))) {
         try {
             const response = await fetch(url, { cache: 'no-store' });
-            if (response.ok) return response.text();
-            lastError = `HTTP ${response.status}`;
+            if (!response.ok) {
+                lastError = `HTTP ${response.status}`;
+                continue;
+            }
+            const payload = await response.text();
+            // Static hosts can return the SPA index.html with HTTP 200 for a
+            // missing JSON/XML file. Validate the expected payload before
+            // treating that response as a successful fallback.
+            if (label === 'Bot manifest') {
+                const parsed = JSON.parse(payload);
+                if (!Array.isArray(parsed) && !Array.isArray(parsed?.bots)) {
+                    lastError = 'response is not a bot manifest';
+                    continue;
+                }
+            }
+            return payload;
         } catch (error) {
             lastError = error instanceof Error ? error.message : String(error);
         }
@@ -157,9 +171,12 @@ const FreeBotsPage = ({ openBotBuilder }: { openBotBuilder?: () => void }) => {
     };
 
     return <div className='prodb-free-bots'>
+        <header className='prodb-import-header'>
+            <div><span>BOT LIBRARY</span><h1>Free Bots</h1><p>Choose a published bot to load it into Bot Builder.</p></div>
+        </header>
         {loading && <div className='prodb-live-empty'>Loading bots…</div>}
         {error && <div className='prodb-live-error'>{error}</div>}
-        {!loading && !error && bots.length === 0 && <div className='prodb-live-empty'>No free bots are available yet.</div>}
+        {!loading && !error && bots.length === 0 && <div className='prodb-live-empty'>No free bots are available yet. Upload your first bot from Admin.</div>}
 
         <div className='prodb-bot-grid prodb-bot-grid--imported'>
             {bots.map(bot => {

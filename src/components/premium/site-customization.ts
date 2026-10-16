@@ -58,8 +58,9 @@ const normalizeNavigation = (value: unknown): PremiumSection[] => {
 
     // Dashboard is the safe landing destination and cannot be removed by a domain configuration.
     if (!navigation.includes('dashboard')) navigation.unshift('dashboard');
-    // Keep the native Pro Analysis page available even when an older domain config
-    // has a navigation list created before this section existed.
+    // Keep Free Bots and Pro Analysis available even when an older domain config
+    // has a navigation list created before these sections existed.
+    if (!navigation.includes('free_bots')) navigation.push('free_bots');
     if (!navigation.includes('pro_analysis')) navigation.push('pro_analysis');
     return navigation.length ? navigation : ['dashboard'];
 };

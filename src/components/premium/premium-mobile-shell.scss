@@ -447,37 +447,6 @@
     }
 }
 
-
-/* Keep Pro Analysis attached to the Save control, never floating over Blockly. */
-.toolbar__save-analysis-stack {
-    display: flex;
-    flex: 0 0 auto;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-    min-width: 0;
-}
-
-.prodb-builder-analysis-shortcut {
-    position: static;
-    z-index: auto;
-    display: block;
-    min-height: 28px;
-    padding: 0 7px;
-    border: 1px solid #087f66;
-    border-radius: 5px;
-    background: #087f66;
-    color: #fff;
-    font-size: 10px;
-    line-height: 1.2;
-    font-weight: 800;
-    white-space: nowrap;
-    box-shadow: none;
-    cursor: pointer;
-    touch-action: manipulation;
-}
-
 @media (max-width: 768px) {
     .toolbar__save-analysis-stack {
         gap: 5px;

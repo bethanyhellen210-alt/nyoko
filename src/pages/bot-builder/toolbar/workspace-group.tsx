@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import {
     LabelPairedArrowRotateLeftMdRegularIcon,
@@ -21,7 +22,7 @@ import ToolbarIcon from './toolbar-icon';
 
 const WorkspaceGroup = observer(() => {
     const { dashboard, toolbar, load_modal, save_modal } = useStore();
-    const { setPreviewOnPopup, setChartModalVisibility, setTradingViewModalVisibility } = dashboard;
+    const { setPreviewOnPopup, setChartModalVisibility, setTradingViewModalVisibility, setActiveTab } = dashboard;
     const { has_redo_stack, has_undo_stack, onResetClick, onSortClick, onUndoClick, onZoomInOutClick } = toolbar;
     const { toggleSaveModal } = save_modal;
     const { toggleLoadModal } = load_modal;
@@ -61,30 +62,41 @@ const WorkspaceGroup = observer(() => {
                         </span>
                     }
                 />
-                <div className='toolbar__save-analysis-stack'>
-                    <ToolbarIcon
-                        popover_message={localize('Save')}
-                        icon={
-                            <span
-                                className='toolbar__icon'
-                                id='db-toolbar__save-button'
-                                data-testid='dt_toolbar_save_button'
-                                onClick={toggleSaveModal}
-                            >
-                                <LabelPairedFloppyDiskMdRegularIcon />
-                            </span>
-                        }
-                    />
-                    <button
-                        type='button'
-                        className='prodb-builder-analysis-shortcut'
-                        onClick={() => {
-                            window.location.hash = '#pro_analysis';
-                        }}
-                    >
-                        Pro Analysis
-                    </button>
-                </div>
+                <ToolbarIcon
+                    popover_message={localize('Save')}
+                    icon={
+                        <span
+                            className='toolbar__icon'
+                            id='db-toolbar__save-button'
+                            data-testid='dt_toolbar_save_button'
+                            onClick={toggleSaveModal}
+                        >
+                            <LabelPairedFloppyDiskMdRegularIcon />
+                        </span>
+                    }
+                />
+                <ToolbarIcon
+                    popover_message={localize('Pro Analysis')}
+                    icon={
+                        <span
+                            className='toolbar__icon'
+                            id='db-toolbar__pro-analysis-button'
+                            data-testid='dt_toolbar_pro_analysis_button'
+                            role='button'
+                            tabIndex={0}
+                            aria-label={localize('Pro Analysis')}
+                            onClick={() => setActiveTab(DBOT_TABS.ANALYSIS)}
+                            onKeyDown={event => {
+                                if (event.key === 'Enter' || event.key === ' ') {
+                                    event.preventDefault();
+                                    setActiveTab(DBOT_TABS.ANALYSIS);
+                                }
+                            }}
+                        >
+                            <LabelPairedChartLineMdRegularIcon />
+                        </span>
+                    }
+                />
                 <ToolbarIcon
                     popover_message={localize('Sort blocks')}
                     icon={

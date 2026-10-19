@@ -1,15 +1,18 @@
 .prodb-premium-shell {
     .prodb-app-header {
-        background: var(--site-header-background, #fff);
+        background: #0b0d0d;
+        border-bottom-color: #202625;
     }
 
     .prodb-nav {
-        background: var(--site-nav-background, #151d26);
+        background: #061942;
+        border-bottom: 1px solid #17366d;
     }
 
     .prodb-nav button {
-        color: var(--site-nav-text, #f3f6f8);
-        background: var(--site-nav-background, #151d26);
+        color: #f6f8ff;
+        background: #061942;
+        border-right-color: #17366d;
     }
 
     .prodb-nav button svg {
@@ -18,11 +21,43 @@
 
     .prodb-nav button.is-active {
         color: #fff;
-        background: var(--site-primary, #059669);
+        background: #15377f;
+        box-shadow: inset 0 -3px 0 #1ed6b0;
     }
 
     .prodb-nav button.is-active svg {
-        color: #fff;
+        color: #d5fff5;
+    }
+
+    .prodb-premium-content {
+        background: #0d0f0f;
+    }
+
+    .prodb-app-header__account,
+    .prodb-app-header__account > strong,
+    .prodb-app-header__account > strong small {
+        color: #13c5b4;
+    }
+
+    .prodb-app-header__account .prodb-account-toggle,
+    .prodb-app-header__account .prodb-user-circle {
+        color: #effffb;
+    }
+
+    .prodb-ticker--light {
+        background: #101313;
+        border-color: #252a2a;
+    }
+
+    .prodb-ticker--light::before { background: linear-gradient(90deg, #101313, transparent); }
+    .prodb-ticker--light::after { background: linear-gradient(270deg, #101313, transparent); }
+    .prodb-ticker--light .prodb-ticker__item { color: #2bd4c4; }
+    .prodb-ticker--light .prodb-ticker__item span { color: #a9b4b7; }
+
+    .prodb-theme-toggle {
+        border-color: #33413f;
+        background: #171d1d;
+        color: #d8fff5;
     }
 
     .prodb-app-header__actions {
